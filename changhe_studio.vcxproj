@@ -15,8 +15,7 @@
     <Keyword>QtVS_v304</Keyword>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
-    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')"
-      >$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -46,11 +45,8 @@
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
-  <Target Name="QtMsBuildNotFound"
-    BeforeTargets="CustomBuild;ClCompile"
-    Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
-    <Message Importance="High"
-      Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
   </Target>
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="Shared" />
@@ -67,6 +63,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>./ui_components/toolwindowmanager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -96,12 +97,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <QtRcc Include="changhe_studio.qrc"/>
-    <QtUic Include="changhe_studio.ui"/>
-    <QtMoc Include="changhe_studio.h"/>
-    <ClCompile Include="changhe_studio.cpp"/>
-    <ClCompile Include="main.cpp"/>
-
+    <ClCompile Include="ui_components\toolwindowmanager\ToolWindowManager.cpp" />
+    <ClCompile Include="ui_components\toolwindowmanager\ToolWindowManagerArea.cpp" />
+    <ClCompile Include="ui_components\toolwindowmanager\ToolWindowManagerSplitter.cpp" />
+    <ClCompile Include="ui_components\toolwindowmanager\ToolWindowManagerTabBar.cpp" />
+    <ClCompile Include="ui_components\toolwindowmanager\ToolWindowManagerWrapper.cpp" />
+    <QtRcc Include="changhe_studio.qrc" />
+    <QtUic Include="changhe_studio.ui" />
+    <QtMoc Include="changhe_studio.h" />
+    <ClCompile Include="changhe_studio.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ui_components\toolwindowmanager\LICENSE" />
+    <None Include="ui_components\toolwindowmanager\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ui_components\toolwindowmanager\ToolWindowManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ui_components\toolwindowmanager\ToolWindowManagerArea.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ui_components\toolwindowmanager\ToolWindowManagerSplitter.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ui_components\toolwindowmanager\ToolWindowManagerTabBar.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ui_components\toolwindowmanager\ToolWindowManagerWrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
